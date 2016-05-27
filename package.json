@@ -1,6 +1,6 @@
 {
   "name": "siren-types",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "A bunch of Siren types defined in TypeScript",
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
