@@ -120,9 +120,9 @@ export interface Link {
     // title - Text describing the nature of a link.
     title?: string;
     // rel - Defines the relationship of the link to its entity, per Web Linking (RFC5988).
-    rel?: string[];
+    rel: string[];
     // href - The URI of the linked resource.
-    href?: string;
+    href: string;
     // type - Defines media type of the linked resource, per Web Linking (RFC5988).
     type?: string;
 }
