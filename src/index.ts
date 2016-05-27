@@ -11,7 +11,7 @@ export interface Entity<P extends {}> {
     // title - Descriptive text about the entity.
     title?: string;
     // A set of key-value pairs that describe the state of an entity.
-    properties: P;
+    properties?: P;
     // entities - A collection of related sub-entities. If a sub-entity contains an href value,
     // it should be treated as an embedded link. Clients may choose to optimistically load embedded
     // links. If no href value exists, the sub-entity is an embedded entity representation that
