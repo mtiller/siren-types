@@ -1,8 +1,9 @@
 {
   "name": "siren-types",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A bunch of Siren types defined in TypeScript",
   "main": "lib/src/index.js",
+  "typings": "lib/src/index.d.ts",
   "scripts": {
     "test": "mocha"
   },
