@@ -4,6 +4,16 @@
  * https://gist.github.com/kevinswiber/14477759858a768d2809326ca4300d26
  */
 
+// This is just a generic Siren entity (this saves you from having to type Entity<{}> every time
+// you have to deal with an entity whose properties could be anything).
+export type Siren = Entity<{}>;
+
+// This is just a generic embedded representation
+export type EmbeddedRepr = EmbeddedRepresentationSubEntity<{}>;
+
+// This is just an embedded link
+export type EmbeddedLink = EmbeddedLinkSubEntity;
+
 export interface Entity<P extends {}> {
     // class: Describes the nature of an entity's content based on the current representation.
     // Possible values are implementation-dependent and should be documented.
@@ -27,6 +37,10 @@ export interface Entity<P extends {}> {
 }
 
 export type SubEntity = EmbeddedLinkSubEntity | EmbeddedRepresentationSubEntity<{}>;
+
+export function isEmbeddedLink(s: SubEntity) {
+    return s.hasOwnProperty("href");
+}
 
 export interface EmbeddedLinkSubEntity {
     // required - rel and href
