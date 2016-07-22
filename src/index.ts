@@ -4,7 +4,7 @@
  * https://gist.github.com/kevinswiber/14477759858a768d2809326ca4300d26
  */
 
-const sirenContentType = "application/vnd.siren+json";
+export const sirenContentType = "application/vnd.siren+json";
 
 // This is just a generic Siren entity (this saves you from having to type Entity<{}> every time
 // you have to deal with an entity whose properties could be anything).
