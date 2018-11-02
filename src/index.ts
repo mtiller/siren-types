@@ -45,8 +45,13 @@ export interface Entity<P extends {}> {
  * is a special case because I didn't want to use `""` as the default value so I
  * allow null in that case.  For everything else, empty objects and arrays suffice.
  */
-export interface NormalizedEntity<P> extends Required<Entity<P>> {
+export interface NormalizedEntity<P> {
+    class: string[];
     title: string | null;
+    properties: P;
+    entities: SubEntity[];
+    actions: Action[];
+    links: Link[];
 }
 
 /** Shorthand function */
