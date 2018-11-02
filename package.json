@@ -1,24 +1,31 @@
 {
-  "name": "siren-types",
-  "version": "0.2.3",
-  "description": "A bunch of Siren types defined in TypeScript",
-  "main": "lib/index.js",
-  "typings": "lib/index.d.ts",
-  "scripts": {
-    "prepublish": "tsc",
-    "test": "mocha"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+ssh://git@github.com/xogeny/siren-types.git"
-  },
-  "keywords": [
-    "Siren"
-  ],
-  "author": "Michael M. Tiller",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/xogeny/siren-types/issues"
-  },
-  "homepage": "https://github.com/xogeny/siren-types#readme"
+    "name": "siren-types",
+    "version": "1.0.0-rc1",
+    "description": "A bunch of Siren types defined in TypeScript plus some useful functions",
+    "main": "lib/index.js",
+    "typings": "lib/index.d.ts",
+    "scripts": {
+        "prepare": "tsc",
+        "compile": "rm -rf lib && tsc",
+        "test": "jest"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+ssh://git@github.com/xogeny/siren-types.git"
+    },
+    "keywords": [
+        "Siren"
+    ],
+    "author": "Michael M. Tiller",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/xogeny/siren-types/issues"
+    },
+    "homepage": "https://github.com/xogeny/siren-types#readme",
+    "devDependencies": {
+        "@types/jest": "^23.3.9",
+        "jest": "^23.6.0",
+        "ts-jest": "^23.10.4",
+        "typescript": "^3.1.6"
+    }
 }

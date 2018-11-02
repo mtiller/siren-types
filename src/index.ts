@@ -1,21 +1,23 @@
 /**
  * These types are based on the JSON Schema found at:
- * 
+ *
  * https://gist.github.com/kevinswiber/14477759858a768d2809326ca4300d26
  */
 
 export const sirenContentType = "application/vnd.siren+json";
 
-// This is just a generic Siren entity (this saves you from having to type Entity<{}> every time
-// you have to deal with an entity whose properties could be anything).
-export type Siren = Entity<{}>;
+// This is a alias for a Siren entity where the type of the properties has a default
+export type Siren<P extends {} = {}> = Entity<P>;
 
-// This is just a generic embedded representation
-export type EmbeddedRepr = EmbeddedRepresentationSubEntity<{}>;
+// This is a short-hand for the mouthful that is EmbeddedRepresentationSubEntity;
+export type EmbeddedRepr<P extends {} = {}> = EmbeddedRepresentationSubEntity<P>;
 
-// This is just an embedded link
+// This is another short-hand
 export type EmbeddedLink = EmbeddedLinkSubEntity;
 
+/**
+ * This is the definition of a Siren entity.  Note that everything is optional
+ */
 export interface Entity<P extends {}> {
     // class: Describes the nature of an entity's content based on the current representation.
     // Possible values are implementation-dependent and should be documented.
@@ -38,17 +40,65 @@ export interface Entity<P extends {}> {
     links?: Link[];
 }
 
-export type SubEntity = EmbeddedLinkSubEntity | EmbeddedRepresentationSubEntity<{}>;
+/**
+ * A slight variation on the Siren type where everything is now required.  Title
+ * is a special case because I didn't want to use `""` as the default value so I
+ * allow null in that case.  For everything else, empty objects and arrays suffice.
+ */
+export interface NormalizedEntity<P> extends Required<Entity<P>> {
+    title: string | null;
+}
 
-export function isEmbeddedLink(s: SubEntity) {
+/** Shorthand function */
+export function isA(e: Entity<any>, className: string, ...additionalClasses: string[]): boolean {
+    const names = [className, ...additionalClasses];
+    return names.some(name => e.class.indexOf(name) >= 0);
+}
+
+/**
+ * This function normalizes an existing Siren Entity.
+ */
+export function normalize<P extends {}>(e: Entity<P>, defaultProps: P): NormalizedEntity<P> {
+    return {
+        class: e.class || [],
+        title: e.title || null,
+        properties: e.properties || defaultProps,
+        entities: e.entities || [],
+        actions: e.actions || [],
+        links: e.links || [],
+    };
+}
+
+/**
+ * Entities in Siren come in two flavors.  Personally, I've never used the
+ * embedded link sub-entity, but I include it here for completeness.
+ */
+export type SubEntity<P extends {} = {}> = EmbeddedLinkSubEntity | EmbeddedRepresentationSubEntity<P>;
+
+/**
+ * If you use this function in a conditional statement, the TypeScript compiler
+ * will know to narrow the type of the argument based on the result.
+ */
+export function isEmbeddedLink(s: SubEntity): s is EmbeddedLinkSubEntity {
     return s.hasOwnProperty("href");
 }
 
+/**
+ * If you use this function in a conditional statement, the TypeScript compiler
+ * will know to narrow the type of the argument based on the result.
+ */
+export function isEmbeddedRepr<P>(s: SubEntity<P>): s is EmbeddedRepresentationSubEntity<P> {
+    return !s.hasOwnProperty("href");
+}
+
+/**
+ * The aforementioned (but never actually used by me) EmbeddedLinkSubEntity.
+ */
 export interface EmbeddedLinkSubEntity {
     // required - rel and href
     // class - Describes the nature of an entity's content based on the current
     // representation. Possible values are implementation-dependent and should be documented.
-    class?: string[];  
+    class?: string[];
     // rel - Defines the relationship of the sub-entity to its parent, per Web Linking (RFC5899).
     // required and cannot be empty.
     rel: string[];
@@ -60,6 +110,10 @@ export interface EmbeddedLinkSubEntity {
     title?: string;
 }
 
+/**
+ * An embedded sub-entity.  It is just like any other Siren representation
+ * except that it MUST include a relation as well.
+ */
 export interface EmbeddedRepresentationSubEntity<P> extends Entity<P> {
     // rel - Defines the relationship of the sub-entity to its parent, per Web Linking (RFC5899).
     // required and cannot be empty.
@@ -83,9 +137,9 @@ export interface Action {
     // these values may be GET, PUT, POST, DELETE, or PATCH. As new methods are
     // introduced, this list can be extended. If this attribute is omitted, GET
     // should be assumed.  (default: "GET")
-    method?: string;
+    method?: "GET" | "PUT" | "POST" | "DELETE" | "PATCH" | "HEAD" | "OPTIONS";
     // href - The URI of the action.
-    href?: string;
+    href: string;
     // title - Descriptive text about the action.
     title?: string;
     // type - The encoding type for the request. When omitted and the fields
@@ -95,15 +149,46 @@ export interface Action {
     fields?: Field[];
 }
 
+export type NormalizedAction = Required<Action>;
+
+export function normalizeAction(a: Action): NormalizedAction {
+    return {
+        name: a.name,
+        class: a.class || [],
+        method: a.method || "GET",
+        href: a.href,
+        title: a.title || a.name,
+        type: a.type || "application/x-www-form-urlencoded",
+        fields: a.fields || [],
+    };
+}
+
 export interface Field {
     // name - A name describing the control. Field names MUST be unique within the
     // set of fields for an action. The behaviour of clients when parsing a Siren
     // document that violates this constraint is undefined.
     name: string;
     // type - The input type of the field. This is a subset of the input types specified by HTML5.
-    type?: "hidden" | "text" | "search" | "tel" | "url" | "email" | "password" | "datetime" |
-            "date" | "month" | "week" | "time" | "datetime-local" | "number" | "range" |
-            "color" | "checkbox" | "radio" | "file";
+    type?:
+        | "hidden"
+        | "text"
+        | "search"
+        | "tel"
+        | "url"
+        | "email"
+        | "password"
+        | "datetime"
+        | "date"
+        | "month"
+        | "week"
+        | "time"
+        | "datetime-local"
+        | "number"
+        | "range"
+        | "color"
+        | "checkbox"
+        | "radio"
+        | "file";
     // title - Textual annotation of a field. Clients may use this as a label.
     title?: string;
     // value - A value assigned to the field.  May be a scalar value or a list of value objects.
