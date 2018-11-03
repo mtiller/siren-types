@@ -1,0 +1,123 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test normalizing functions should normalize subentities 1`] = `
+Object {
+  "actions": Array [
+    Object {
+      "class": Array [],
+      "fields": Array [],
+      "href": "http://api.x.io/orders/42/items",
+      "method": "GET",
+      "name": "create",
+      "title": "Create Item",
+      "type": "application/x-www-form-urlencoded",
+    },
+  ],
+  "class": Array [],
+  "entities": Array [
+    Object {
+      "class": Array [
+        "items",
+        "collection",
+      ],
+      "href": "http://api.x.io/orders/42/items",
+      "rel": Array [
+        "http://x.io/rels/order-items",
+      ],
+      "title": null,
+      "type": "application/octet-stream",
+    },
+    Object {
+      "actions": Array [],
+      "class": Array [
+        "info",
+        "customer",
+      ],
+      "entities": Array [],
+      "links": Array [
+        Object {
+          "href": "http://api.x.io/customers/pj123",
+          "rel": Array [
+            "self",
+          ],
+        },
+      ],
+      "properties": Object {
+        "customerId": "pj123",
+        "name": "Peter Joseph",
+      },
+      "rel": Array [
+        "http://x.io/rels/customer",
+      ],
+      "title": null,
+    },
+    Object {
+      "actions": Array [],
+      "class": Array [],
+      "entities": Array [],
+      "links": Array [
+        Object {
+          "href": "http://api.x.io/customers/pj124",
+          "rel": Array [
+            "self",
+          ],
+        },
+      ],
+      "properties": Object {
+        "customerId": "pj124",
+        "name": "Peter Joseph",
+      },
+      "rel": Array [
+        "http://x.io/rels/customer",
+      ],
+      "title": null,
+    },
+    Object {
+      "actions": Array [
+        Object {
+          "class": Array [],
+          "fields": Array [],
+          "href": "http://api.x.io/orders/42/items",
+          "method": "GET",
+          "name": "create",
+          "title": "Create Item",
+          "type": "application/x-www-form-urlencoded",
+        },
+      ],
+      "class": Array [
+        "items",
+        "collection",
+      ],
+      "entities": Array [
+        Object {
+          "class": Array [],
+          "href": "http://api.x.io/orders/42/items",
+          "rel": Array [
+            "http://x.io/rels/order-items",
+          ],
+          "title": null,
+          "type": "application/octet-stream",
+        },
+        Object {
+          "class": Array [],
+          "href": "http://api.x.io/orders/y/items",
+          "rel": Array [
+            "http://x.io/rels/order-items",
+          ],
+          "title": null,
+          "type": "application/octet-stream",
+        },
+      ],
+      "links": Array [],
+      "properties": Object {},
+      "rel": Array [
+        "http://x.io/rels/order-items",
+      ],
+      "title": null,
+    },
+  ],
+  "links": Array [],
+  "properties": Object {},
+  "title": null,
+}
+`;

@@ -15,5 +15,5 @@
         "preserveConstEnums": true,
         "suppressImplicitAnyIndexErrors": true
     },
-    "exclude": ["node_modules", "lib", "retired"]
+    "exclude": ["node_modules", "lib", "retired", "__tests__"]
 }

@@ -49,8 +49,8 @@ export interface NormalizedEntity<P> {
     class: string[];
     title: string | null;
     properties: P;
-    entities: SubEntity[];
-    actions: Action[];
+    entities: NormalizedSubEntity[];
+    actions: NormalizedAction[];
     links: Link[];
 }
 
@@ -68,10 +68,42 @@ export function normalize<P extends {}>(e: Entity<P>, defaultProps: P): Normaliz
         class: e.class || [],
         title: e.title || null,
         properties: e.properties || defaultProps,
-        entities: e.entities || [],
-        actions: e.actions || [],
+        entities: e.entities ? e.entities.map(x => normalizeEmbedded(x, {})) : [],
+        actions: e.actions ? e.actions.map(x => normalizeAction(x)) : [],
         links: e.links || [],
     };
+}
+
+export function normalizeEmbeddedLinkSubEntity(e: EmbeddedLinkSubEntity): NormalizedEmbeddedLinkSubEntity {
+    return {
+        class: e.class || [],
+        rel: e.rel,
+        href: e.href,
+        type: e.type || "application/octet-stream",
+        title: e.title || null,
+    };
+}
+
+export function normalizeEmbeddedRepresentationSubEntity<P>(
+    e: EmbeddedRepresentationSubEntity<P>,
+    defaultProps: P,
+): NormalizedEmbeddedRepresentationSubEntity<P> {
+    return {
+        class: e.class || [],
+        rel: e.rel,
+        title: e.title || null,
+        properties: e.properties || defaultProps,
+        entities: e.entities ? e.entities.map(x => normalizeEmbedded(x, {})) : [],
+        actions: e.actions ? e.actions.map(x => normalizeAction(x)) : [],
+        links: e.links || [],
+    };
+}
+
+export function normalizeEmbedded<P>(e: SubEntity<P>, defaultProps: P): NormalizedSubEntity<P> {
+    if (isEmbeddedLink(e)) {
+        return normalizeEmbeddedLinkSubEntity(e);
+    }
+    return normalizeEmbeddedRepresentationSubEntity(e, {});
 }
 
 /**
@@ -79,6 +111,13 @@ export function normalize<P extends {}>(e: Entity<P>, defaultProps: P): Normaliz
  * embedded link sub-entity, but I include it here for completeness.
  */
 export type SubEntity<P extends {} = {}> = EmbeddedLinkSubEntity | EmbeddedRepresentationSubEntity<P>;
+
+/**
+ * Normalized forms of the subentity types
+ */
+export type NormalizedSubEntity<P extends {} = {}> =
+    | NormalizedEmbeddedLinkSubEntity
+    | NormalizedEmbeddedRepresentationSubEntity<P>;
 
 /**
  * If you use this function in a conditional statement, the TypeScript compiler
@@ -115,6 +154,14 @@ export interface EmbeddedLinkSubEntity {
     title?: string;
 }
 
+export interface NormalizedEmbeddedLinkSubEntity {
+    class: string[];
+    rel: string[];
+    href: string;
+    type: string;
+    title: string | null;
+}
+
 /**
  * An embedded sub-entity.  It is just like any other Siren representation
  * except that it MUST include a relation as well.
@@ -122,6 +169,13 @@ export interface EmbeddedLinkSubEntity {
 export interface EmbeddedRepresentationSubEntity<P> extends Entity<P> {
     // rel - Defines the relationship of the sub-entity to its parent, per Web Linking (RFC5899).
     // required and cannot be empty.
+    rel: string[];
+}
+
+/**
+ * Normalized version of an embedded representation
+ */
+export interface NormalizedEmbeddedRepresentationSubEntity<P> extends NormalizedEntity<{}> {
     rel: string[];
 }
 
