@@ -109,7 +109,7 @@ Object {
         },
       ],
       "links": Array [],
-      "properties": Object {},
+      "properties": undefined,
       "rel": Array [
         "http://x.io/rels/order-items",
       ],
@@ -117,7 +117,6 @@ Object {
     },
   ],
   "links": Array [],
-  "properties": undefined,
   "title": null,
 }
 `;
