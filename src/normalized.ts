@@ -1,4 +1,12 @@
-import { Entity, Link, Action, EmbeddedLinkSubEntity, EmbeddedRepresentationSubEntity, SubEntity } from "./types";
+import {
+    Entity,
+    Link,
+    Action,
+    EmbeddedLinkSubEntity,
+    EmbeddedRepresentationSubEntity,
+    SubEntity,
+    Properties,
+} from "./types";
 import { isEmbeddedLink } from "./functions";
 
 /**
@@ -18,7 +26,7 @@ export interface NormalizedEntity<P> {
 /**
  * This function normalizes an existing Siren Entity.
  */
-export function normalize<P extends {}>(e: Entity<P>, defaultProps: P): NormalizedEntity<P> {
+export function normalize<P extends Properties>(e: Entity<P>, defaultProps: P): NormalizedEntity<P> {
     return {
         class: e.class || [],
         title: e.title || null,
@@ -54,7 +62,7 @@ export function normalizeEmbeddedRepresentationSubEntity<P>(
     };
 }
 
-export function normalizeEmbedded<P>(e: SubEntity<P>, defaultProps: P): NormalizedSubEntity<P> {
+export function normalizeEmbedded<P>(e: SubEntity<P>, defaultProps: P): NormalizedSubEntity<{}> {
     if (isEmbeddedLink(e)) {
         return normalizeEmbeddedLinkSubEntity(e);
     }
@@ -64,7 +72,7 @@ export function normalizeEmbedded<P>(e: SubEntity<P>, defaultProps: P): Normaliz
 /**
  * Normalized forms of the subentity types
  */
-export type NormalizedSubEntity<P extends {} = {}> =
+export type NormalizedSubEntity<P extends Properties = {}> =
     | NormalizedEmbeddedLinkSubEntity
     | NormalizedEmbeddedRepresentationSubEntity<P>;
 
@@ -79,7 +87,7 @@ export interface NormalizedEmbeddedLinkSubEntity {
 /**
  * Normalized version of an embedded representation
  */
-export interface NormalizedEmbeddedRepresentationSubEntity<P> extends NormalizedEntity<{}> {
+export interface NormalizedEmbeddedRepresentationSubEntity<P> extends NormalizedEntity<P> {
     rel: string[];
 }
 

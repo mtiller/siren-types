@@ -13,17 +13,19 @@ export type EmbeddedRepr<P extends {} = {}> = EmbeddedRepresentationSubEntity<P>
 // This is another short-hand
 export type EmbeddedLink = EmbeddedLinkSubEntity;
 
+export type Properties = {} | undefined;
+
 /**
  * This is the definition of a Siren entity.  Note that everything is optional
  */
-export interface Entity<P extends {}> {
+export interface Entity<P extends Properties = {}> {
     // class: Describes the nature of an entity's content based on the current representation.
     // Possible values are implementation-dependent and should be documented.
     class?: string[];
     // title - Descriptive text about the entity.
     title?: string;
     // A set of key-value pairs that describe the state of an entity.
-    properties?: P;
+    properties: P;
     // entities - A collection of related sub-entities. If a sub-entity contains an href value,
     // it should be treated as an embedded link. Clients may choose to optimistically load embedded
     // links. If no href value exists, the sub-entity is an embedded entity representation that
