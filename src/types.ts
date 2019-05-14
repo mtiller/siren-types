@@ -5,7 +5,7 @@
  */
 
 // This is a alias for a Siren entity where the type of the properties has a default
-export type Siren<P extends {} = {}> = Entity<P>;
+export type Siren<P extends {} = any> = Entity<P>;
 
 // This is a short-hand for the mouthful that is EmbeddedRepresentationSubEntity;
 export type EmbeddedRepr<P extends {} = {}> = EmbeddedRepresentationSubEntity<P>;
@@ -31,7 +31,7 @@ export interface Entity<P extends Properties = {}> {
     // links. If no href value exists, the sub-entity is an embedded entity representation that
     // contains all the characteristics of a typical entity. One difference is that a sub-entity
     // MUST contain a rel attribute to describe its relationship to the parent entity.
-    entities?: SubEntity[];
+    entities?: SubEntity<any>[];
     // actions - A collection of actions; actions show available behaviors an entity exposes.
     actions?: Action[];
     // links - A collection of items that describe navigational links, distinct from entity
