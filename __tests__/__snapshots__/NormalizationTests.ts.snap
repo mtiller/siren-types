@@ -117,7 +117,7 @@ Object {
     },
   ],
   "links": Array [],
-  "properties": Object {},
+  "properties": undefined,
   "title": null,
 }
 `;

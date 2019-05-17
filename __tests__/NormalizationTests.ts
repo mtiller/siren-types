@@ -2,8 +2,10 @@ import { Siren, normalize, Action, normalizeAction } from "../src";
 
 describe("Test normalizing functions", () => {
     it("should normalize an emtpy Entity", () => {
-        const base: Siren = {};
-        const normal = normalize(base, {});
+        const base: Siren = {
+            properties: {},
+        };
+        const normal = normalize(base);
         expect(normal).toEqual({
             class: [],
             title: null,
@@ -16,9 +18,10 @@ describe("Test normalizing functions", () => {
 
     it("should normalize an Entity with a class", () => {
         const base: Siren = {
+            properties: {},
             class: ["empty"],
         };
-        const normal = normalize(base, {});
+        const normal = normalize(base);
         expect(normal).toEqual({
             class: ["empty"],
             title: null,
@@ -48,8 +51,10 @@ describe("Test normalizing functions", () => {
 
     it("should normalize subentities", () => {
         const base: Siren = {
+            properties: undefined,
             entities: [
                 {
+                    properties: undefined,
                     class: ["items", "collection"],
                     rel: ["http://x.io/rels/order-items"],
                     href: "http://api.x.io/orders/42/items",
@@ -72,6 +77,7 @@ describe("Test normalizing functions", () => {
                     links: [{ rel: ["self"], href: "http://api.x.io/customers/pj124" }],
                 },
                 {
+                    properties: undefined,
                     class: ["items", "collection"],
                     rel: ["http://x.io/rels/order-items"],
                     entities: [
@@ -89,7 +95,7 @@ describe("Test normalizing functions", () => {
             ],
             actions: [{ name: "create", title: "Create Item", href: "http://api.x.io/orders/42/items" }],
         };
-        const normal = normalize(base, {});
+        const normal = normalize(base);
         expect(normal).toMatchSnapshot();
     });
 });
