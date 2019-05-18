@@ -29,11 +29,11 @@ export interface NormalizedEntity<P> {
  * Note this doesn't normalize properties because we cannot know how to
  * normalize them.  So we just hope they are what we expect.
  */
-export function normalize<P extends Properties>(e: Entity<P>): NormalizedEntity<P> {
+export function normalize<P extends Properties>(e: Entity<P>, defaultProps?: P): NormalizedEntity<P> {
     return {
         class: e.class || [],
         title: e.title || null,
-        properties: e.properties,
+        properties: e.properties || defaultProps,
         entities: e.entities ? e.entities.map(x => normalizeEmbedded(x, {})) : [],
         actions: e.actions ? e.actions.map(x => normalizeAction(x)) : [],
         links: e.links || [],

@@ -2,14 +2,14 @@ import { Siren, normalize, Action, normalizeAction } from "../src";
 
 describe("Test normalizing functions", () => {
     it("should normalize an emtpy Entity", () => {
-        const base: Siren = {
-            properties: {},
+        const base: Siren<{ x: number }> = {
+            properties: undefined as { x: number },
         };
-        const normal = normalize(base);
+        const normal = normalize(base, { x: 5 });
         expect(normal).toEqual({
             class: [],
             title: null,
-            properties: {},
+            properties: { x: 5 },
             actions: [],
             links: [],
             entities: [],
