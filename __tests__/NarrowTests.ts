@@ -1,10 +1,4 @@
-import {
-    isEmbeddedLink,
-    isEmbeddedRepr,
-    EmbeddedLinkSubEntity,
-    SubEntity,
-    EmbeddedRepresentationSubEntity,
-} from "../src";
+import { isEmbeddedLink, EmbeddedLinkSubEntity, SubEntity, EmbeddedEntity, isEmbeddedEntity } from "../src";
 
 describe("Test functions that narrow types", () => {
     it("should narrow and embedded link", () => {
@@ -21,11 +15,12 @@ describe("Test functions that narrow types", () => {
         }
     });
     it("should narrow and embedded link", () => {
-        const link: EmbeddedRepresentationSubEntity<{}> = {
+        const link: EmbeddedEntity<{}> = {
+            properties: undefined,
             rel: ["self"],
             title: "An embedded link sub entity",
         };
         const entity: SubEntity = link;
-        expect(isEmbeddedRepr(entity)).toEqual(true);
+        expect(isEmbeddedEntity(entity)).toEqual(true);
     });
 });

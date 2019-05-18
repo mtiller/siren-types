@@ -1,4 +1,4 @@
-import { Entity, SubEntity, EmbeddedLinkSubEntity, EmbeddedRepresentationSubEntity } from "./types";
+import { Entity, SubEntity, EmbeddedLink, EmbeddedEntity } from "./types";
 
 /** Shorthand function */
 export function isA(e: Entity<any>, className: string, ...additionalClasses: string[]): boolean {
@@ -7,10 +7,50 @@ export function isA(e: Entity<any>, className: string, ...additionalClasses: str
 }
 
 /**
+ * Fetch (all) self relations.  Only the href is included here because these
+ * might come from a Link, EmbeddedLink or EmbeddedEntity (very unlikely).
+ * @param s
+ */
+export function collectSelves(e: Entity<any>): string[] {
+    let ret: string[] = [];
+    if (e.links) {
+        for (let i = 0; i < e.links.length; i++) {
+            // istanbul ignore else
+            if (e.links[i].rel.indexOf("self") >= 0) {
+                ret.push(e.links[i].href);
+            }
+        }
+    }
+    if (e.entities) {
+        for (let i = 0; i < e.entities.length; i++) {
+            const entity = e.entities[i];
+            if (isEmbeddedLink(entity)) {
+                // istanbul ignore else
+                if (entity.rel.indexOf("self") >= 0) {
+                    ret.push(entity.href);
+                }
+            } else {
+                // From the spec:
+                //
+                // Root entities and sub-entities that are embedded representations
+                // SHOULD contain a links collection with at least one item contain
+                // a rel value of self and an href attribute with a value of the
+                // entity's URI.
+                // istanbul ignore else
+                if (entity.rel.indexOf("self") >= 0) {
+                    ret = [...ret, ...collectSelves(entity)];
+                }
+            }
+        }
+    }
+    return ret;
+}
+
+/**
  * If you use this function in a conditional statement, the TypeScript compiler
  * will know to narrow the type of the argument based on the result.
  */
-export function isEmbeddedLink(s: SubEntity): s is EmbeddedLinkSubEntity {
+export function isEmbeddedLink(s: SubEntity): s is EmbeddedLink {
     return s.hasOwnProperty("href");
 }
 
@@ -18,6 +58,6 @@ export function isEmbeddedLink(s: SubEntity): s is EmbeddedLinkSubEntity {
  * If you use this function in a conditional statement, the TypeScript compiler
  * will know to narrow the type of the argument based on the result.
  */
-export function isEmbeddedRepr<P>(s: SubEntity<P>): s is EmbeddedRepresentationSubEntity<P> {
+export function isEmbeddedEntity<P>(s: SubEntity<P>): s is EmbeddedEntity<P> {
     return !s.hasOwnProperty("href");
 }

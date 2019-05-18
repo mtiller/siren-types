@@ -7,8 +7,8 @@
 // This is a alias for a Siren entity where the type of the properties has a default
 export type Siren<P extends {} = any> = Entity<P>;
 
-// This is a short-hand for the mouthful that is EmbeddedRepresentationSubEntity;
-export type EmbeddedRepr<P extends {} = {}> = EmbeddedRepresentationSubEntity<P>;
+// Shorthand for the mouthful that is EmbeddedRepresentationSubEntity.
+export type EmbeddedEntity<P> = EmbeddedRepresentationSubEntity<P>;
 
 // This is another short-hand
 export type EmbeddedLink = EmbeddedLinkSubEntity;
