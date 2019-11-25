@@ -1,19 +1,19 @@
 {
-    "compilerOptions": {
-        "outDir": "./lib",
-        "target": "es6",
-        "module": "commonjs",
-        "moduleResolution": "node",
-        "isolatedModules": false,
-        "jsx": "react",
-        "experimentalDecorators": true,
-        "emitDecoratorMetadata": true,
-        "declaration": true,
-        "noImplicitAny": true,
-        "removeComments": false,
-        "noLib": false,
-        "preserveConstEnums": true,
-        "suppressImplicitAnyIndexErrors": true
-    },
-    "exclude": ["node_modules", "lib", "retired", "__tests__"]
+  "compilerOptions": {
+    "outDir": "./lib",
+    "target": "es2018",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "isolatedModules": false,
+    "jsx": "react",
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "declaration": true,
+    "noImplicitAny": true,
+    "removeComments": false,
+    "noLib": false,
+    "preserveConstEnums": true,
+    "suppressImplicitAnyIndexErrors": true
+  },
+  "exclude": ["node_modules", "lib", "retired", "__tests__"]
 }
