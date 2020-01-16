@@ -104,7 +104,7 @@ export function normalizeEmbedded<P extends Properties | undefined>(
 /**
  * Normalized forms of the subentity types
  */
-export type NormalizedSubEntity<P extends {} = {}> =
+export type NormalizedSubEntity<P extends Properties | undefined = undefined> =
   | NormalizedEmbeddedLinkSubEntity
   | NormalizedEmbeddedRepresentationSubEntity<P>;
 
