@@ -47,7 +47,7 @@ export interface Base {
 
 export type Entity<
   P extends Properties | undefined = undefined
-> = P extends undefined ? EntityWithoutProperties : EntityWithProperties<P>;
+> = P extends Properties ? EntityWithProperties<P> : EntityWithoutProperties;
 
 export interface EntityWithProperties<P extends Properties> extends Base {
   properties: P;
