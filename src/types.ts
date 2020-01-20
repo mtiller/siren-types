@@ -12,9 +12,7 @@ export type Siren<P extends Properties | undefined = undefined> = Entity<P>;
 // This is a short-hand for the mouthful that is EmbeddedRepresentationSubEntity;
 export type EmbeddedRepr<
   P extends Properties | undefined = undefined
-> = P extends undefined
-  ? EmbeddedRepresentationSubEntityWithoutProperties
-  : EmbeddedRepresentationSubEntityWithProperties<P>;
+> = EmbeddedRepresentationSubEntity<P>;
 
 // This is another short-hand
 export type EmbeddedLink = EmbeddedLinkSubEntity;
@@ -47,7 +45,7 @@ export interface Base {
 
 export type Entity<
   P extends Properties | undefined = undefined
-> = P extends Properties ? EntityWithProperties<P> : EntityWithoutProperties;
+> = P extends undefined ? EntityWithoutProperties : EntityWithProperties<P>;
 
 export interface EntityWithProperties<P extends Properties> extends Base {
   properties: P;
