@@ -5,11 +5,9 @@ import {
   EmbeddedLinkSubEntity,
   Properties,
   EmbeddedRepresentationSubEntity,
-  EmbeddedRepresentationSubEntityWithProperties,
-  EmbeddedRepresentationSubEntityWithoutProperties,
   SubEntity
 } from "./types";
-import { isEmbeddedLink } from "./functions";
+import { isEmbeddedLink } from "./validate";
 
 /**
  * A slight variation on the Siren type where everything is now required.  Title

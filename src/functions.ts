@@ -1,14 +1,12 @@
-import {
-  Entity,
-  SubEntity,
-  Properties,
-  EmbeddedLinkSubEntity,
-  EmbeddedRepresentationSubEntity,
-  EmbeddedRepresentationSubEntityWithoutProperties,
-  EmbeddedRepresentationSubEntityWithProperties
-} from "./types";
+import { Entity, SubEntity, EmbeddedRepresentationSubEntity } from "./types";
+import { isEmbeddedLink, isEmbeddedRepr } from "./validate";
 
-/** Shorthand function */
+/**
+ * Check with a given entity contains a particular class.
+ * @param e
+ * @param className
+ * @param additionalClasses
+ */
 export function isA(
   e: Entity<any>,
   className: string,
@@ -23,7 +21,9 @@ export function isA(
  * might come from a Link, EmbeddedLink or EmbeddedEntity (very unlikely).
  * @param s
  */
-export function collectSelves(e: Entity<any>): string[] {
+export function collectSelves(
+  e: Entity<any> | EmbeddedRepresentationSubEntity<any>
+): string[] {
   let ret: string[] = [];
   if (e.links) {
     for (let i = 0; i < e.links.length; i++) {
@@ -35,7 +35,7 @@ export function collectSelves(e: Entity<any>): string[] {
   }
   if (e.entities) {
     for (let i = 0; i < e.entities.length; i++) {
-      const entity = e.entities[i];
+      const entity: SubEntity<any> = e.entities[i];
       if (isEmbeddedLink(entity)) {
         // istanbul ignore else
         if (entity.rel.indexOf("self") >= 0) {
@@ -56,27 +56,4 @@ export function collectSelves(e: Entity<any>): string[] {
     }
   }
   return ret;
-}
-
-/**
- * If you use this function in a conditional statement, the TypeScript compiler
- * will know to narrow the type of the argument based on the result.
- */
-export function isEmbeddedLink<P extends Properties | undefined>(
-  s:
-    | EmbeddedLinkSubEntity
-    | EmbeddedRepresentationSubEntityWithoutProperties
-    | EmbeddedRepresentationSubEntityWithProperties<P>
-): s is EmbeddedLinkSubEntity {
-  return s.hasOwnProperty("href");
-}
-
-/**
- * If you use this function in a conditional statement, the TypeScript compiler
- * will know to narrow the type of the argument based on the result.
- */
-export function isEmbeddedRepr<P>(
-  s: SubEntity<P>
-): s is EmbeddedRepresentationSubEntity<P> {
-  return !s.hasOwnProperty("href");
 }
