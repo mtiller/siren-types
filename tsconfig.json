@@ -13,7 +13,10 @@
     "removeComments": false,
     "noLib": false,
     "preserveConstEnums": true,
-    "suppressImplicitAnyIndexErrors": true
+    "suppressImplicitAnyIndexErrors": true,
+    "plugins": [
+      { "transform": "typescript-is/lib/transform-inline/transformer" }
+    ]
   },
   "exclude": ["node_modules", "lib", "retired", "__tests__"]
 }

@@ -5,8 +5,8 @@
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
   "scripts": {
-    "prepare": "tsc",
-    "compile": "rm -rf lib && tsc",
+    "prepare": "ttsc",
+    "build": "rm -rf lib && ttsc",
     "test": "jest"
   },
   "repository": {
@@ -26,6 +26,8 @@
     "@types/jest": "^24.0.23",
     "jest": "^24.9.0",
     "ts-jest": "^24.2.0",
-    "typescript": "^3.7.2"
+    "ttypescript": "^1.5.10",
+    "typescript": "^3.7.2",
+    "typescript-is": "^0.13.1"
   }
 }
