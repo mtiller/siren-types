@@ -7,7 +7,7 @@ import {
   EmbeddedRepresentationSubEntity,
   EmbeddedRepresentationSubEntityWithProperties,
   EmbeddedRepresentationSubEntityWithoutProperties,
-  SubEntity
+  SubEntity,
 } from "./types";
 import { isEmbeddedLink } from "./functions";
 
@@ -44,20 +44,20 @@ export function normalize<P extends Properties | undefined = undefined>(
       title: e.title || null,
       properties: props,
       entities: e.entities
-        ? e.entities.map(x => normalizeEmbedded(x as SubEntity))
+        ? e.entities.map((x) => normalizeEmbedded(x as SubEntity))
         : [],
-      actions: e.actions ? e.actions.map(x => normalizeAction(x)) : [],
-      links: e.links || []
+      actions: e.actions ? e.actions.map((x) => normalizeAction(x)) : [],
+      links: e.links || [],
     };
   } else {
     return {
       class: e.class || [],
       title: e.title || null,
       entities: e.entities
-        ? e.entities.map(x => normalizeEmbedded(x as SubEntity))
+        ? e.entities.map((x) => normalizeEmbedded(x as SubEntity))
         : [],
-      actions: e.actions ? e.actions.map(x => normalizeAction(x)) : [],
-      links: e.links || []
+      actions: e.actions ? e.actions.map((x) => normalizeAction(x)) : [],
+      links: e.links || [],
     } as NormalizedEntity<P>;
   }
 }
@@ -70,7 +70,7 @@ export function normalizeEmbeddedLinkSubEntity(
     rel: e.rel,
     href: e.href,
     type: e.type || "application/octet-stream",
-    title: e.title || null
+    title: e.title || null,
   };
 }
 
@@ -83,12 +83,12 @@ export function normalizeEmbeddedRepresentationSubEntity<
     class: e.class || [],
     rel: e.rel,
     title: e.title || null,
-    properties: e.properties,
+    properties: e.properties as P,
     entities: e.entities
-      ? e.entities.map(x => normalizeEmbedded(x as SubEntity))
+      ? e.entities.map((x) => normalizeEmbedded(x as SubEntity))
       : [],
-    actions: e.actions ? e.actions.map(x => normalizeAction(x)) : [],
-    links: e.links || []
+    actions: e.actions ? e.actions.map((x) => normalizeAction(x)) : [],
+    links: e.links || [],
   };
 }
 
@@ -120,7 +120,7 @@ export interface NormalizedEmbeddedLinkSubEntity {
  * Normalized version of an embedded representation
  */
 export interface NormalizedEmbeddedRepresentationSubEntity<P>
-  extends NormalizedEntity<{}> {
+  extends NormalizedEntity<P> {
   rel: string[];
 }
 
@@ -134,6 +134,6 @@ export function normalizeAction(a: Action): NormalizedAction {
     href: a.href,
     title: a.title || a.name,
     type: a.type || "application/x-www-form-urlencoded",
-    fields: a.fields || []
+    fields: a.fields || [],
   };
 }

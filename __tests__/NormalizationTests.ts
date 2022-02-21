@@ -1,21 +1,28 @@
-import { Siren, normalize, Action, normalizeAction, SubEntity } from "../src";
+import {
+  Siren,
+  normalize,
+  Action,
+  normalizeAction,
+  SubEntity,
+  EntityWithoutProperties,
+} from "../src";
 
 describe("Test normalizing functions", () => {
   it("should normalize an empty Entity", () => {
-    const base: Siren = {};
+    const base: EntityWithoutProperties = {};
     const normal = normalize(base, undefined);
     expect(normal).toEqual({
       class: [],
       title: null,
       actions: [],
       links: [],
-      entities: []
+      entities: [],
     });
   });
 
   it("should normalize an Entity with a class", () => {
-    const base: Siren = {
-      class: ["empty"]
+    const base: EntityWithoutProperties = {
+      class: ["empty"],
     };
     const normal = normalize(base, undefined);
     expect(normal).toEqual({
@@ -23,14 +30,14 @@ describe("Test normalizing functions", () => {
       title: null,
       actions: [],
       links: [],
-      entities: []
+      entities: [],
     });
   });
 
   it("should normalize an Action", () => {
     const base: Action = {
       name: "create",
-      href: "/#"
+      href: "/#",
     };
     const normal = normalizeAction(base);
     expect(normal).toEqual({
@@ -40,34 +47,34 @@ describe("Test normalizing functions", () => {
       href: base.href,
       title: base.name,
       type: "application/x-www-form-urlencoded",
-      fields: []
+      fields: [],
     });
   });
 
   it("should normalize subentities", () => {
-    const base: Siren = {
+    const base: EntityWithoutProperties = {
       entities: [
         {
           class: ["items", "collection"],
           rel: ["http://x.io/rels/order-items"],
-          href: "http://api.x.io/orders/42/items"
+          href: "http://api.x.io/orders/42/items",
         },
         {
           class: ["info", "customer"],
           rel: ["http://x.io/rels/customer"],
           properties: {
             customerId: "pj123",
-            name: "Peter Joseph"
+            name: "Peter Joseph",
           },
-          links: [{ rel: ["self"], href: "http://api.x.io/customers/pj123" }]
+          links: [{ rel: ["self"], href: "http://api.x.io/customers/pj123" }],
         },
         {
           rel: ["http://x.io/rels/customer"],
           properties: {
             customerId: "pj124",
-            name: "Peter Joseph"
+            name: "Peter Joseph",
           },
-          links: [{ rel: ["self"], href: "http://api.x.io/customers/pj124" }]
+          links: [{ rel: ["self"], href: "http://api.x.io/customers/pj124" }],
         },
         {
           class: ["items", "collection"],
@@ -75,29 +82,29 @@ describe("Test normalizing functions", () => {
           entities: [
             {
               rel: ["http://x.io/rels/order-items"],
-              href: "http://api.x.io/orders/42/items"
+              href: "http://api.x.io/orders/42/items",
             },
             {
               rel: ["http://x.io/rels/order-items"],
-              href: "http://api.x.io/orders/y/items"
-            }
+              href: "http://api.x.io/orders/y/items",
+            },
           ],
           actions: [
             {
               name: "create",
               title: "Create Item",
-              href: "http://api.x.io/orders/42/items"
-            }
-          ]
-        } as SubEntity<undefined>
+              href: "http://api.x.io/orders/42/items",
+            },
+          ],
+        } as SubEntity<undefined>,
       ],
       actions: [
         {
           name: "create",
           title: "Create Item",
-          href: "http://api.x.io/orders/42/items"
-        }
-      ]
+          href: "http://api.x.io/orders/42/items",
+        },
+      ],
     };
     const normal = normalize(base, undefined);
     expect(normal).toMatchSnapshot();

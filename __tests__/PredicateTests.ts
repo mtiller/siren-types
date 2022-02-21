@@ -1,7 +1,7 @@
-import { Siren, isA } from "../src";
+import { Siren, isA, EntityWithoutProperties } from "../src";
 
-const siren: Siren = {
-  class: ["foo", "bar"]
+const siren: EntityWithoutProperties = {
+  class: ["foo", "bar"],
 };
 
 describe("Test predicates", () => {
